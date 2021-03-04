@@ -1,8 +1,4 @@
-﻿<head>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-</head>
+﻿
 <style>
     body {
         position: relative;
@@ -38,14 +34,20 @@
     .txt_cnt {
         width: 100%;
         min-width: 540px;
-        max-width: 650px;
+        max-width: 100%;
+        height: 100%;
+        min-height: 768px;
         overflow: hidden;
         margin: 10px auto;
         position: absolute;
+        font-family: 微軟正黑體;
+        font-size: 40px;
         top: 60px;
         left: 0;
         right: 0;
         pointer-events: none;
+        font-weight: bold;
+        z-index: 10;
     }
 
         .txt_cnt p {
@@ -90,27 +92,24 @@
             margin-right: 20px;
         }
 </style>
-<h2></h2>
-<div class="container" style="width:100%;">
-    <input type="text" id="name" class="form-control" placeholder="你的名字" />
-    <input type="text" id="message" class="form-control" placeholder="輸入內容" />
-    <input type="button" id="sendmessage" value="Send" class="  btn btn-primary" />
-    <br />
-    <br />
-    <ul id="discussion"></ul>
-    <div class="txt_cnt">
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-        <p>4</p>
-        <p>5</p>
-        <p>6</p>
-        <p>7</p>
-        <p>8</p>
-        <p>9</p>
-        <p>10</p>
+<div>
+    <div>
+        <iframe style="position:fixed;top:0px;left:0px; width:100%;height:100%;" src="https://www.youtube.com/embed/jiJ-vqQA6IA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="txt_cnt">
+            <p>1</p>
+            <p>2</p>
+            <p>3</p>
+            <p>4</p>
+            <p>5</p>
+            <p>6</p>
+            <p>7</p>
+            <p>8</p>
+            <p>9</p>
+            <p>10</p>
+        </div>
     </div>
 </div>
+
 @section scripts
 {
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
@@ -141,7 +140,7 @@
             var hub = $.connection.testHubs;
             hub.client.addNewMessageToPage = function (name, message) {
                 //$('#discussion').append('<li><strong>' + name + '</strong>: ' + message + '</li>');
-                danmu(message, 10000, name);
+                danmu(message, 15000, name);
             };
             $('#message').focus();
 
@@ -149,15 +148,15 @@
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
                     hub.server.send($('#name').val(), $('#message').val());
-                    $('#message').val('').focus();
                 });
             });
-            
         });
 
         function danmu(txt, time, name) {
             var spanClass = "danum" + danmuIndex;
-            var txtHtml = "<span class=" + spanClass + " >" +name+":"+ txt + "</span>";
+            var txtHtml = "";
+
+            var txtHtml = "<span class=" + spanClass + " >" + name + " : " + txt + "</span>";
             // var n = Math.floor(Math.random()*10);
             var n = (pIndex + 3) % 10;
             console.log(txt + ", " + n + ", " + colorIndex);
@@ -169,6 +168,6 @@
             $("." + spanClass).animate({ left: 0 }, time);
             danmuIndex++;
         }
-        
+
     </script>
 }
